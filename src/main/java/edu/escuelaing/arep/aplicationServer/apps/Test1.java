@@ -4,9 +4,10 @@ import edu.escuelaing.arep.aplicationServer.Web;
 
 
 public class Test1 {
+    
 
     @Web("method1")
-    public String method1() {
+    public static String method1() {
         return "<!DOCTYPE html>"
                 + "<html>"
                 + "<head>"

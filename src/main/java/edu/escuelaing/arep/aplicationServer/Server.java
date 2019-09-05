@@ -1,6 +1,7 @@
 package edu.escuelaing.arep.aplicationServer;
 
 import java.io.*;
+import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -17,7 +18,7 @@ public class Server {
     private int port;
     private PrintWriter out;
     private BufferedReader in;
-    private URLHandler handler;
+    private ListURLHandler handler;
 
     private static final Map<String, String> EXTENSION_TO_MIMETYPE =
             Arrays.stream(new String[][]{
@@ -34,7 +35,8 @@ public class Server {
             }).collect(Collectors.toMap(kv -> kv[0], kv -> kv[1]));
 
 
-    public Server(int port) throws IOException {
+    public Server(int port, ListURLHandler handler) throws IOException, ReflectiveOperationException {
+        this.handler = handler;
         keepRunning = true;
         this.port = port;
         do {
@@ -44,33 +46,11 @@ public class Server {
         } while (keepRunning);
     }
 
-    private void handleRequests() throws IOException {
-        String outputLine;
-        String[] inputLine = in.readLine().split(" ");
-        String absolutePath = Paths.get("").toAbsolutePath().toString();
-        Path filePath = Paths.get(absolutePath, inputLine[1]);
-        System.out.println("Request recived: " + inputLine[0] + " " + inputLine[1] + " " + inputLine[2]);
-        try {
-            byte[] file = Files.readAllBytes(filePath);
-            out.println(getHTTPHeader(inputLine[1]));
-            OutputStream outputSteam = clientSocket.getOutputStream();
-            outputSteam.write(file);
-            outputSteam.flush();
-        } catch (Exception e) {
-            out.println(getHTTPHeader(inputLine[1]));
-            out.println("<!DOCTYPE html>"
-                    + "<html>"
-                    + "<head>"
-                    + "<meta charset=\"UTF-8\">"
-                    + "<title>Not Found</title>\n"
-                    + "</head>"
-                    + "<body>"
-                    + "404 Not Found"
-                    + "</body>"
-                    + "</html>" );
-        }
-
-
+    private static String getErrorHTTPHeader() {
+        return "HTTP/1.1 404 \n"
+                + "Content-Type: text/html;charset=UTF-8"
+                + "\nServer: Nicoga97\n"
+                + "Status: 404\n";
     }
 
     private void startServer() throws IOException {
@@ -93,7 +73,7 @@ public class Server {
                         clientSocket.getInputStream()));
     }
 
-    private static String getHTTPHeader(String path) {
+    private static String getContentType(String path) {
         String extension = "";
         String contentType;
         for (int i = path.length() - 1; i >= 0; i--) {
@@ -109,10 +89,52 @@ public class Server {
         } else {
             contentType = "text/html;charset=UTF-8";
         }
+        return contentType;
+    }
+
+    private static String getHTTPHeader(String contentType) {
+
         return "HTTP/1.1 200 OK\n"
                 + "Content-Type: " + contentType
                 + "\nServer: Nicoga97\n"
                 + "Status: 200\n";
+    }
+
+    private void handleRequests() throws IOException, ReflectiveOperationException {
+        String[] inputLine = in.readLine().split(" ");
+        System.out.println("Request recived: " + inputLine[0] + " " + inputLine[1] + " " + inputLine[2]);
+        byte[] result;
+        try {
+            if (handler.getURLHandlerList().containsKey(inputLine[1])) {
+
+                Method a = handler.getURLHandlerList().get(inputLine[1]);
+                result = a.invoke(null, null).toString().getBytes();
+                System.out.println(handler.getURLHandlerList().get(inputLine[1]).invoke(null, null).toString());
+            } else {
+                String absolutePath = Paths.get("").toAbsolutePath().toString();
+                Path filePath = Paths.get(absolutePath, inputLine[1]);
+                result = Files.readAllBytes(filePath);
+            }
+            out.println(getHTTPHeader(getContentType(inputLine[1])));
+            OutputStream outputSteam = clientSocket.getOutputStream();
+            outputSteam.write(result);
+            outputSteam.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+            out.println(getErrorHTTPHeader());
+            out.println("<!DOCTYPE html>"
+                    + "<html>"
+                    + "<head>"
+                    + "<meta charset=\"UTF-8\">"
+                    + "<title>Not Found</title>\n"
+                    + "</head>"
+                    + "<body>"
+                    + "404 Not Found"
+                    + "</body>"
+                    + "</html>");
+        }
+
+
     }
 
     private void stopServer() throws IOException {
