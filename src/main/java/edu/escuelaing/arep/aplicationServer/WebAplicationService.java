@@ -6,8 +6,10 @@ public class WebAplicationService {
 
     public WebAplicationService() {
         initializeServer(35000);
+        URLHandler.loadWebAplications();
 
     }
+
     public void initializeServer(int port){
         try {
             new Server(port);
