@@ -32,6 +32,12 @@ public class Server {
                     {"jpg", "image/jpeg"},
                     {"jpeg", "image/jpeg"},
                     {"svg", "image/svg+xml"},
+                    {"csv", "text/csv"},
+                    {"doc", "application/msword"},
+                    {"docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"},
+                    {"ico", "image/vnd.microsoft.icon"},
+                    {"json", "application/json"},
+                    {"pdf", "application/pdf"},
             }).collect(Collectors.toMap(kv -> kv[0], kv -> kv[1]));
 
 
