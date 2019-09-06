@@ -19,5 +19,19 @@ public class Test1 {
                 + "</body>"
                 + "</html>";
     }
+
+    @Web("method2")
+    public static String method2() {
+        return "<!DOCTYPE html>"
+                + "<html>"
+                + "<head>"
+                + "<meta charset=\"UTF-8\">"
+                + "<title>Test 2</title>\n"
+                + "</head>"
+                + "<body>"
+                + "Test 2 is working"
+                + "</body>"
+                + "</html>";
+    }
 }
 

@@ -136,18 +136,14 @@ public class Server {
             outputSteam.flush();
         } catch (Exception e) {
             out.write(getErrorHTTPHeader());
-
-            out.write("<!DOCTYPE html>"
-                    + "<html>"
-                    + "<head>"
-                    + "<meta charset=\"UTF-8\">"
-                    + "<title>Not Found</title>\n"
-                    + "</head>"
-                    + "<body>"
-                    + "404 Not Found"
-                    + "</body>"
-                    + "</html>");
             out.flush();
+            String absolutePath = Paths.get("").toAbsolutePath().toString();
+            Path filePath = Paths.get(absolutePath, "/src/main/resources/public/404/index.html");
+            result = Files.readAllBytes(filePath);
+            OutputStream outputSteam = clientSocket.getOutputStream();
+            outputSteam.write(result);
+            outputSteam.flush();
+
         }
 
 
