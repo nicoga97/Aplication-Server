@@ -114,17 +114,10 @@ public class Server {
         byte[] result;
         try {
             if (inputLine[1].equals("/")) {
-                String index = "<!DOCTYPE html>\n"
-                        + "<html>\n"
-                        + "<head>\n"
-                        + "<meta charset=\"UTF-8\">\n"
-                        + "<title>Aplicaton Server</title>\n"
-                        + "</head>\n"
-                        + "<body>\n"
-                        + "<h1>This is nicoga's aplication server</h1>\n"
-                        + "</body>\n"
-                        + "</html>\n";
-                result = index.getBytes();
+                String absolutePath = Paths.get("").toAbsolutePath().toString();
+                Path filePath = Paths.get(absolutePath, "/src/main/resources/public/WelcomePage/index.html");
+                result = Files.readAllBytes(filePath);
+
             } else if (handler.getURLHandlerList().containsKey(inputLine[1])) {
                 Method a = handler.getURLHandlerList().get(inputLine[1]);
                 result = a.invoke(null, null).toString().getBytes();
