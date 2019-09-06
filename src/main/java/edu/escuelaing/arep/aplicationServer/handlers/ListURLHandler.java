@@ -15,6 +15,7 @@ public class ListURLHandler {
     private static final String aplicationServerRoot = "/apps";
     private static HashMap<String, Method> URLHandlerList = new HashMap<>();
 
+
     public void loadWebAplications() throws InvocationTargetException, IllegalAccessException {
         System.out.println("Loading web aplication handlers...");
         Reflections reflections = new Reflections(new ConfigurationBuilder()
