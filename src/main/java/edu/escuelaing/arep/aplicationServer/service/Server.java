@@ -104,7 +104,7 @@ public class Server {
 
         return "HTTP/1.1 200 OK\r\n"
                 + "Content-Type: " + contentType + "\r\n"
-                + "\nServer: Nicoga97\r\n"
+                + "Server: Nicoga97\r\n"
                 + "Status: 200\r\n";
     }
 
