@@ -110,7 +110,10 @@ public class Server {
     }
 
     private void handleRequests() throws IOException, ReflectiveOperationException {
-        String[] inputLine = in.readLine().split(" ");
+        String[] inputLine = null;
+        if (in.ready()) {
+            inputLine = in.readLine().split(" ");
+        }
         System.out.println("Request recived: " + inputLine[0] + " " + inputLine[1] + " " + inputLine[2]);
         byte[] result;
         try {
