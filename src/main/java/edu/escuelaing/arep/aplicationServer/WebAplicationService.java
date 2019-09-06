@@ -4,13 +4,11 @@ import java.io.IOException;
 
 public class WebAplicationService {
 
-    private WebAplicationService() throws ReflectiveOperationException {
+    public WebAplicationService() throws ReflectiveOperationException {
         ListURLHandler handler = new ListURLHandler();
         handler.loadWebAplications();
 
         initializeServer(getPort(), handler);
-
-
     }
 
     private static int getPort() {
