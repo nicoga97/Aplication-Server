@@ -1,4 +1,6 @@
-package edu.escuelaing.arep.aplicationServer;
+package edu.escuelaing.arep.aplicationServer.service;
+
+import edu.escuelaing.arep.aplicationServer.handlers.ListURLHandler;
 
 import java.io.*;
 import java.lang.reflect.Method;
@@ -53,10 +55,10 @@ public class Server {
     }
 
     private static String getErrorHTTPHeader() {
-        return "HTTP/1.1 404 \n"
-                + "Content-Type: text/html;charset=UTF-8"
-                + "\nServer: Nicoga97\n"
-                + "Status: 404\n";
+        return "HTTP/1.1 404 \r\n"
+                + "Content-Type: text/html;charset=UTF-8\r\n"
+                + "\nServer: Nicoga97\r\n"
+                + "Status: 404\r\n";
     }
 
     private void startServer() throws IOException {
@@ -100,10 +102,10 @@ public class Server {
 
     private static String getHTTPHeader(String contentType) {
 
-        return "HTTP/1.1 200 OK\n"
-                + "Content-Type: " + contentType
-                + "\nServer: Nicoga97\n"
-                + "Status: 200\n";
+        return "HTTP/1.1 200 OK\r\n"
+                + "Content-Type: " + contentType + "\r\n"
+                + "\nServer: Nicoga97\r\n"
+                + "Status: 200\r\n";
     }
 
     private void handleRequests() throws IOException, ReflectiveOperationException {
@@ -111,8 +113,19 @@ public class Server {
         System.out.println("Request recived: " + inputLine[0] + " " + inputLine[1] + " " + inputLine[2]);
         byte[] result;
         try {
-            if (handler.getURLHandlerList().containsKey(inputLine[1])) {
-
+            if (inputLine[1].equals("/")) {
+                String index = "<!DOCTYPE html>\n"
+                        + "<html>\n"
+                        + "<head>\n"
+                        + "<meta charset=\"UTF-8\">\n"
+                        + "<title>Aplicaton Server</title>\n"
+                        + "</head>\n"
+                        + "<body>\n"
+                        + "<h1>This is nicoga's aplication server</h1>\n"
+                        + "</body>\n"
+                        + "</html>\n";
+                result = index.getBytes();
+            } else if (handler.getURLHandlerList().containsKey(inputLine[1])) {
                 Method a = handler.getURLHandlerList().get(inputLine[1]);
                 result = a.invoke(null, null).toString().getBytes();
                 System.out.println(handler.getURLHandlerList().get(inputLine[1]).invoke(null, null).toString());

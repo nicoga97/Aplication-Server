@@ -1,4 +1,4 @@
-package edu.escuelaing.arep.aplicationServer;
+package edu.escuelaing.arep.aplicationServer.handlers;
 
 @FunctionalInterface
 public interface Handler {

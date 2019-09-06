@@ -1,5 +1,6 @@
-package edu.escuelaing.arep.aplicationServer;
+package edu.escuelaing.arep.aplicationServer.handlers;
 
+import edu.escuelaing.arep.aplicationServer.service.Web;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;

@@ -1,7 +1,9 @@
 package edu.escuelaing.arep.aplicationServer;
 
 
-public class App 
+import edu.escuelaing.arep.aplicationServer.service.WebAplicationService;
+
+public class App
 {
     public static void main(String[] args) throws ReflectiveOperationException {
         new WebAplicationService();

@@ -1,6 +1,6 @@
 package edu.escuelaing.arep.aplicationServer.apps;
 
-import edu.escuelaing.arep.aplicationServer.Web;
+import edu.escuelaing.arep.aplicationServer.service.Web;
 
 
 public class Test1 {
