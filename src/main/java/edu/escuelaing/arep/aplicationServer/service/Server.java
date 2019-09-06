@@ -58,7 +58,8 @@ public class Server {
         return "HTTP/1.1 404 \r\n"
                 + "Content-Type: text/html;charset=UTF-8\r\n"
                 + "\nServer: Nicoga97\r\n"
-                + "Status: 404\r\n";
+                + "Status: 404\r\n"
+                + "\r\n";
     }
 
     private void startServer() throws IOException {
@@ -105,7 +106,8 @@ public class Server {
         return "HTTP/1.1 200 OK\r\n"
                 + "Content-Type: " + contentType + "\r\n"
                 + "Server: Nicoga97\r\n"
-                + "Status: 200\r\n";
+                + "Status: 200\r\n"
+                + "\r\n";
     }
 
     private void handleRequests() throws IOException, ReflectiveOperationException {
@@ -127,14 +129,16 @@ public class Server {
                 Path filePath = Paths.get(absolutePath, inputLine[1]);
                 result = Files.readAllBytes(filePath);
             }
-            out.println(getHTTPHeader(getContentType(inputLine[1])));
+            out.write(getHTTPHeader(getContentType(inputLine[1])));
+            out.flush();
             OutputStream outputSteam = clientSocket.getOutputStream();
             outputSteam.write(result);
             outputSteam.flush();
         } catch (Exception e) {
             e.printStackTrace();
-            out.println(getErrorHTTPHeader());
-            out.println("<!DOCTYPE html>"
+            out.write(getErrorHTTPHeader());
+            out.flush();
+            out.write("<!DOCTYPE html>"
                     + "<html>"
                     + "<head>"
                     + "<meta charset=\"UTF-8\">"
@@ -144,6 +148,7 @@ public class Server {
                     + "404 Not Found"
                     + "</body>"
                     + "</html>");
+            out.flush();
         }
 
 
