@@ -113,43 +113,43 @@ public class Server {
         String[] inputLine = null;
         if (in.ready()) {
             inputLine = in.readLine().split(" ");
-        }
-        System.out.println("Request recived: " + inputLine[0] + " " + inputLine[1] + " " + inputLine[2]);
-        byte[] result;
-        try {
-            if (inputLine[1].equals("/")) {
-                String absolutePath = Paths.get("").toAbsolutePath().toString();
-                Path filePath = Paths.get(absolutePath, "/src/main/resources/public/WelcomePage/index.html");
-                result = Files.readAllBytes(filePath);
+            System.out.println("Request recived: " + inputLine[0] + " " + inputLine[1] + " " + inputLine[2]);
+            byte[] result;
+            try {
+                if (inputLine[1].equals("/")) {
+                    String absolutePath = Paths.get("").toAbsolutePath().toString();
+                    Path filePath = Paths.get(absolutePath, "/src/main/resources/public/WelcomePage/index.html");
+                    result = Files.readAllBytes(filePath);
 
-            } else if (handler.getURLHandlerList().containsKey(inputLine[1])) {
-                result = handler.getURLHandlerList().get(inputLine[1]).invoke(null, null).toString().getBytes();
-                System.out.println(handler.getURLHandlerList().get(inputLine[1]).invoke(null, null).toString());
-            } else {
-                String absolutePath = Paths.get("").toAbsolutePath().toString();
-                Path filePath = Paths.get(absolutePath, inputLine[1]);
-                result = Files.readAllBytes(filePath);
+                } else if (handler.getURLHandlerList().containsKey(inputLine[1])) {
+                    result = handler.getURLHandlerList().get(inputLine[1]).invoke(null, null).toString().getBytes();
+                    System.out.println(handler.getURLHandlerList().get(inputLine[1]).invoke(null, null).toString());
+                } else {
+                    String absolutePath = Paths.get("").toAbsolutePath().toString();
+                    Path filePath = Paths.get(absolutePath, inputLine[1]);
+                    result = Files.readAllBytes(filePath);
+                }
+                out.write(getHTTPHeader(getContentType(inputLine[1])));
+                out.flush();
+                OutputStream outputSteam = clientSocket.getOutputStream();
+                outputSteam.write(result);
+                outputSteam.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+                out.write(getErrorHTTPHeader());
+                out.flush();
+                out.write("<!DOCTYPE html>"
+                        + "<html>"
+                        + "<head>"
+                        + "<meta charset=\"UTF-8\">"
+                        + "<title>Not Found</title>\n"
+                        + "</head>"
+                        + "<body>"
+                        + "404 Not Found"
+                        + "</body>"
+                        + "</html>");
+                out.flush();
             }
-            out.write(getHTTPHeader(getContentType(inputLine[1])));
-            out.flush();
-            OutputStream outputSteam = clientSocket.getOutputStream();
-            outputSteam.write(result);
-            outputSteam.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-            out.write(getErrorHTTPHeader());
-            out.flush();
-            out.write("<!DOCTYPE html>"
-                    + "<html>"
-                    + "<head>"
-                    + "<meta charset=\"UTF-8\">"
-                    + "<title>Not Found</title>\n"
-                    + "</head>"
-                    + "<body>"
-                    + "404 Not Found"
-                    + "</body>"
-                    + "</html>");
-            out.flush();
         }
 
 
