@@ -3,7 +3,6 @@ package edu.escuelaing.arep.aplicationServer.service;
 import edu.escuelaing.arep.aplicationServer.handlers.ListURLHandler;
 
 import java.io.*;
-import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -121,8 +120,7 @@ public class Server {
                 result = Files.readAllBytes(filePath);
 
             } else if (handler.getURLHandlerList().containsKey(inputLine[1])) {
-                Method a = handler.getURLHandlerList().get(inputLine[1]);
-                result = a.invoke(null, null).toString().getBytes();
+                result = handler.getURLHandlerList().get(inputLine[1]).invoke(null, null).toString().getBytes();
                 System.out.println(handler.getURLHandlerList().get(inputLine[1]).invoke(null, null).toString());
             } else {
                 String absolutePath = Paths.get("").toAbsolutePath().toString();
