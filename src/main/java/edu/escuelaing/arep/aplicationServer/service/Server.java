@@ -128,7 +128,7 @@ public class Server {
             System.out.println(inputLine[1]);
             if (inputLine[1].equals("/")) {
                 String absolutePath = Paths.get("").toAbsolutePath().toString();
-                Path filePath = Paths.get(absolutePath, "/src/main/resources/public/WelcomePage/index.html");
+                Path filePath = Paths.get(absolutePath, "/src/main/resources/public/welcomePage/index.html");
                 result = Files.readAllBytes(filePath);
 
             } else if (handler.getURLHandlerList().containsKey(inputLine[1])) {
