@@ -3,6 +3,7 @@ package edu.escuelaing.arep.aplicationServer.service;
 import edu.escuelaing.arep.aplicationServer.handlers.ListURLHandler;
 
 import java.io.*;
+import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -20,6 +21,7 @@ public class Server {
     private PrintWriter out;
     private BufferedReader in;
     private ListURLHandler handler;
+    private OutputStream outputSteam;
 
     private static final Map<String, String> EXTENSION_TO_MIMETYPE =
             Arrays.stream(new String[][]{
@@ -108,22 +110,30 @@ public class Server {
     }
 
     private void handleRequests() throws IOException, ReflectiveOperationException {
-        String input = in.readLine();
-        if (input == null || input.equals(" ")) {
+        String firstLine = in.readLine();
+        String input;
+        outputSteam = clientSocket.getOutputStream();
+        if (firstLine == null || firstLine.equals(" ")) {
             return;
         }
-        String[] inputLine = input.split(" ");
+        System.out.println(firstLine);
+        while (in.ready() && (input = in.readLine()) != null && !input.isEmpty()) {
+            System.out.println(input);
+        }
+
+        String[] inputLine = firstLine.split(" ");
         System.out.println("Request recived: " + inputLine[0] + " " + inputLine[1] + " " + inputLine[2]);
         byte[] result;
         try {
+            System.out.println(inputLine[1]);
             if (inputLine[1].equals("/")) {
                 String absolutePath = Paths.get("").toAbsolutePath().toString();
                 Path filePath = Paths.get(absolutePath, "/src/main/resources/public/WelcomePage/index.html");
                 result = Files.readAllBytes(filePath);
 
             } else if (handler.getURLHandlerList().containsKey(inputLine[1])) {
-                result = handler.getURLHandlerList().get(inputLine[1]).invoke(null, null).toString().getBytes();
-                System.out.println(handler.getURLHandlerList().get(inputLine[1]).invoke(null, null).toString());
+                result = ((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, null).toString().getBytes();
+                System.out.println(((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, null).toString());
             } else {
                 String absolutePath = Paths.get("").toAbsolutePath().toString();
                 Path filePath = Paths.get(absolutePath, inputLine[1]);
@@ -131,16 +141,15 @@ public class Server {
             }
             out.write(getHTTPHeader(getContentType(inputLine[1])));
             out.flush();
-            OutputStream outputSteam = clientSocket.getOutputStream();
             outputSteam.write(result);
             outputSteam.flush();
         } catch (Exception e) {
+            e.printStackTrace();
             out.write(getErrorHTTPHeader());
             out.flush();
             String absolutePath = Paths.get("").toAbsolutePath().toString();
             Path filePath = Paths.get(absolutePath, "/src/main/resources/public/404/index.html");
             result = Files.readAllBytes(filePath);
-            OutputStream outputSteam = clientSocket.getOutputStream();
             outputSteam.write(result);
             outputSteam.flush();
 
@@ -154,5 +163,6 @@ public class Server {
         in.close();
         clientSocket.close();
         serverSocket.close();
+        outputSteam.close();
     }
 }

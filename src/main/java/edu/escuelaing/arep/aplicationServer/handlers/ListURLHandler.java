@@ -8,12 +8,14 @@ import org.reflections.util.ConfigurationBuilder;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 public class ListURLHandler {
     private static final String aplicationServerRoot = "/apps";
-    private static HashMap<String, Method> URLHandlerList = new HashMap<>();
+    private static HashMap<String, List<Object>> URLHandlerList = new HashMap<>();
 
 
     public void loadWebAplications() throws InvocationTargetException, IllegalAccessException {
@@ -27,8 +29,13 @@ public class ListURLHandler {
         for (Class loadedClass : allClasses) {
             for (Method method : loadedClass.getMethods()) {
                 if (method.isAnnotationPresent(Web.class)) {
+                    ArrayList<Object> methodAndParams = new ArrayList<>();
+                    methodAndParams.add(method);
+                    if (method.getParameters() != null) {
+
+                    }
                     URLHandlerList.put(aplicationServerRoot + "/" + method.getAnnotation(Web.class).value()
-                            , method);
+                            , methodAndParams);
 
                     System.out.println("Handler loaded for: " + aplicationServerRoot + "/" + method.getAnnotation(Web.class).value());
 
@@ -37,7 +44,7 @@ public class ListURLHandler {
         }
     }
 
-    public HashMap<String, Method> getURLHandlerList() {
+    public HashMap<String, List<Object>> getURLHandlerList() {
         return URLHandlerList;
     }
 }
