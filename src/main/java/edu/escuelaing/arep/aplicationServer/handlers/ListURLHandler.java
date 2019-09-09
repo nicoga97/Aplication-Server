@@ -32,7 +32,7 @@ public class ListURLHandler {
                     ArrayList<Object> methodAndParams = new ArrayList<>();
                     methodAndParams.add(method);
                     if (method.getParameters() != null) {
-
+                        methodAndParams.add(method.getParameters());
                     }
                     URLHandlerList.put(aplicationServerRoot + "/" + method.getAnnotation(Web.class).value()
                             , methodAndParams);

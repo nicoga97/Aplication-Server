@@ -123,15 +123,22 @@ public class Server {
 
         String[] inputLine = firstLine.split(" ");
         System.out.println("Request recived: " + inputLine[0] + " " + inputLine[1] + " " + inputLine[2]);
+        String[] params = null;
+        if (inputLine[1].contains("?")) {
+            inputLine[1] = inputLine[1].split("\\?")[0];
+            params = ((firstLine.split(" ")[1]).split("\\?")[0]).split("&");
+        }
         byte[] result;
         try {
-            System.out.println(inputLine[1]);
             if (inputLine[1].equals("/")) {
                 String absolutePath = Paths.get("").toAbsolutePath().toString();
                 Path filePath = Paths.get(absolutePath, "/src/main/resources/public/welcomePage/index.html");
                 result = Files.readAllBytes(filePath);
 
             } else if (handler.getURLHandlerList().containsKey(inputLine[1])) {
+                if (params != null) {
+                    params = getAndcheckParams(inputLine[1], (String[]) handler.getURLHandlerList().get(inputLine[1]).get(0));
+                }
                 result = ((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, null).toString().getBytes();
                 System.out.println(((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, null).toString());
             } else {
@@ -145,17 +152,33 @@ public class Server {
             outputSteam.flush();
         } catch (Exception e) {
             e.printStackTrace();
-            out.write(getErrorHTTPHeader());
-            out.flush();
-            String absolutePath = Paths.get("").toAbsolutePath().toString();
-            Path filePath = Paths.get(absolutePath, "/src/main/resources/public/404/index.html");
-            result = Files.readAllBytes(filePath);
-            outputSteam.write(result);
-            outputSteam.flush();
+            return404Error();
 
         }
 
 
+    }
+
+    public String[] getAndcheckParams(String request, String[] paramsName) throws Exception {
+        String[] params = new String[paramsName.length];
+
+        System.out.println(request);
+        params[0] = request;
+        if (params == null) {
+            throw new Exception("Not found");
+        }
+        return params;
+    }
+
+    public void return404Error() throws IOException {
+        byte[] result;
+        out.write(getErrorHTTPHeader());
+        out.flush();
+        String absolutePath = Paths.get("").toAbsolutePath().toString();
+        Path filePath = Paths.get(absolutePath, "/src/main/resources/public/404/index.html");
+        result = Files.readAllBytes(filePath);
+        outputSteam.write(result);
+        outputSteam.flush();
     }
 
     private void stopServer() throws IOException {
