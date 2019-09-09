@@ -1,126 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Nicoga's aplication server</title>
-    <link href="src/main/resources/public/welcomePage/style.css" rel="stylesheet">
+	<title>Calculator</title>
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1" name="viewport">
+	<!--===============================================================================================-->
+	<link href="src/main/resources/public/welcomePage/images/icons/favicon.ico" rel="icon" type="image/png"/>
+	<!--===============================================================================================-->
+	<link href="src/main/resources/public/welcomePage/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+		  type="text/css">
+	<!--===============================================================================================-->
+	<link href="src/main/resources/public/welcomePage/fonts/font-awesome-4.7.0/css/font-awesome.min.css"
+		  rel="stylesheet" type="text/css">
+	<!--===============================================================================================-->
+	<link href="src/main/resources/public/welcomePage/vendor/animate/animate.css" rel="stylesheet" type="text/css">
+	<!--===============================================================================================-->
+	<link href="src/main/resources/public/welcomePage/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet"
+		  type="text/css">
+	<!--===============================================================================================-->
+	<link href="src/main/resources/public/welcomePage/vendor/select2/select2.css" rel="stylesheet" type="text/css">
+	<!--===============================================================================================-->
+	<link href="src/main/resources/public/welcomePage/css/util.css" rel="stylesheet" type="text/css">
+	<link href="src/main/resources/public/welcomePage/css/main.css" rel="stylesheet" type="text/css">
+	<!--===============================================================================================-->
 </head>
 <body>
-<!-- partial:index.partial.html -->
-<div class="container">
-    <div class="error">
-        <h2>Nicoga's</h2>
-        <h3>Application server</h3>
-        <p>Feel free to deploy your application here</p>
-    </div>
-    <div class="stack-container">
-        <div class="card-container">
-            <div class="perspec" style="--spreaddist: 125px; --scaledist: .75; --vertdist: -25px;">
-                <div class="card">
-                    <div class="writing">
-                        <div class="topbar">
-                            <div class="red"></div>
-                            <div class="yellow"></div>
-                            <div class="green"></div>
-                        </div>
-                        <div class="code">
-                            <ul>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-container">
-            <div class="perspec" style="--spreaddist: 100px; --scaledist: .8; --vertdist: -20px;">
-                <div class="card">
-                    <div class="writing">
-                        <div class="topbar">
-                            <div class="red"></div>
-                            <div class="yellow"></div>
-                            <div class="green"></div>
-                        </div>
-                        <div class="code">
-                            <ul>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-container">
-            <div class="perspec" style="--spreaddist:75px; --scaledist: .85; --vertdist: -15px;">
-                <div class="card">
-                    <div class="writing">
-                        <div class="topbar">
-                            <div class="red"></div>
-                            <div class="yellow"></div>
-                            <div class="green"></div>
-                        </div>
-                        <div class="code">
-                            <ul>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-container">
-            <div class="perspec" style="--spreaddist: 50px; --scaledist: .9; --vertdist: -10px;">
-                <div class="card">
-                    <div class="writing">
-                        <div class="topbar">
-                            <div class="red"></div>
-                            <div class="yellow"></div>
-                            <div class="green"></div>
-                        </div>
-                        <div class="code">
-                            <ul>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-container">
-            <div class="perspec" style="--spreaddist: 25px; --scaledist: .95; --vertdist: -5px;">
-                <div class="card">
-                    <div class="writing">
-                        <div class="topbar">
-                            <div class="red"></div>
-                            <div class="yellow"></div>
-                            <div class="green"></div>
-                        </div>
-                        <div class="code">
-                            <ul>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-container">
-            <div class="perspec" style="--spreaddist: 0px; --scaledist: 1; --vertdist: 0px;">
-                <div class="card">
-                    <div class="writing">
-                        <div class="topbar">
-                            <div class="red"></div>
-                            <div class="yellow"></div>
-                            <div class="green"></div>
-                        </div>
-                        <div class="code">
-                            <ul>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
+<div class="bg-contact2" style="background-image: url('src/main/resources/public/welcomePage/images/bg-01.jpg');">
+	<div class="container-contact2">
+		<div class="wrap-contact2">
+			<form class="contact2-form validate-form">
+					<span class="contact2-form-title">
+						This is a calculator that add two numbers
+					</span>
+
+				<div class="wrap-input2 validate-input" data-validate="Number 1 is Required">
+					<input class="input2" name="name" type="text">
+					<span class="focus-input2" data-placeholder="Number 1"></span>
+				</div>
+
+				<div class="wrap-input2 validate-input" data-validate="Number 2 is required">
+					<input class="input2" name="email" type="text">
+					<span class="focus-input2" data-placeholder="Number 2"></span>
+				</div>
+
+
+				<div class="container-contact2-form-btn">
+					<div class="wrap-contact2-form-btn">
+						<div class="contact2-form-bgbtn"></div>
+						<button class="contact2-form-btn">
+							Add numbers
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
-<!-- partial -->
-<script src="src/main/resources/public/welcomePage/script.js"></script>
+
+
+<!--===============================================================================================-->
+<script src="src/main/resources/public/welcomePage/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="src/main/resources/public/welcomePage/vendor/bootstrap/js/popper.js"></script>
+<script src="src/main/resources/public/welcomePage/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="src/main/resources/public/welcomePage/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+<script src="src/main/resources/public/welcomePage/js/main.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+
+	function gtag() {
+		dataLayer.push(arguments);
+	}
+
+	gtag('js', new Date());
+
+	gtag('config', 'UA-23581568-13');
+</script>
 
 </body>
 </html>
