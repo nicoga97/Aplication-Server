@@ -31,8 +31,12 @@ public class ListURLHandler {
                 if (method.isAnnotationPresent(Web.class)) {
                     ArrayList<Object> methodAndParams = new ArrayList<>();
                     methodAndParams.add(method);
-                    if (method.getParameters() != null) {
-                        methodAndParams.add(method.getParameters());
+                    if (method.getParameters() != null && method.getParameters().length > 0) {
+                        String[] params = new String[method.getParameters().length];
+                        for (int i = 0; i < method.getParameters().length; i++) {
+                            params[i] = method.getParameters()[i].getName();
+                        }
+                        methodAndParams.add(params);
                     }
                     URLHandlerList.put(aplicationServerRoot + "/" + method.getAnnotation(Web.class).value()
                             , methodAndParams);

@@ -116,17 +116,13 @@ public class Server {
         if (firstLine == null || firstLine.equals(" ")) {
             return;
         }
-        System.out.println(firstLine);
-        while (in.ready() && (input = in.readLine()) != null && !input.isEmpty()) {
-            System.out.println(input);
-        }
 
         String[] inputLine = firstLine.split(" ");
         System.out.println("Request recived: " + inputLine[0] + " " + inputLine[1] + " " + inputLine[2]);
         String[] params = null;
         if (inputLine[1].contains("?")) {
             inputLine[1] = inputLine[1].split("\\?")[0];
-            params = ((firstLine.split(" ")[1]).split("\\?")[0]).split("&");
+            params = ((firstLine.split(" ")[1]).split("\\?")[1]).split("&");
         }
         byte[] result;
         try {
@@ -137,10 +133,15 @@ public class Server {
 
             } else if (handler.getURLHandlerList().containsKey(inputLine[1])) {
                 if (params != null) {
-                    params = getAndcheckParams(params, (String[]) handler.getURLHandlerList().get(inputLine[1]).get(0));
+                    params = getAndcheckParams(params, (String[]) handler.getURLHandlerList().get(inputLine[1]).get(1));
+                    System.out.println(Arrays.toString(params));
+                    result = ((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, (Object[]) params).toString().getBytes();
+                    //System.out.println(((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, (Object[]) params).toString());
+                } else {
+                    result = ((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, null).toString().getBytes();
                 }
-                result = ((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, null).toString().getBytes();
-                System.out.println(((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, null).toString());
+
+
             } else {
                 String absolutePath = Paths.get("").toAbsolutePath().toString();
                 Path filePath = Paths.get(absolutePath, inputLine[1]);
@@ -160,14 +161,23 @@ public class Server {
     }
 
     public String[] getAndcheckParams(String[]  params, String[] paramsNames) throws Exception {
-        String[] params = new String[paramsNames.length];
-
-        System.out.println(request);
-        params[0] = request;
-        if (params == null) {
+        String[] ordredParams = new String[paramsNames.length];
+        if (params == null || params.length != paramsNames.length) {
             throw new Exception("Not found");
         }
-        return params;
+        for (String s : params) {
+            String[] x = s.split("=");
+            System.out.println(Arrays.toString(x));
+
+
+            for (int i = 0; i < paramsNames.length; i++) {
+                if (x[0].equals(paramsNames[i])) {
+                    System.out.println("entrofd3");
+                    ordredParams[i] = x[1];
+                }
+            }
+        }
+        return ordredParams;
     }
 
     public void return404Error() throws IOException {

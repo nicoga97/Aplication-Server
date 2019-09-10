@@ -33,5 +33,10 @@ public class Test1 {
                 + "</body>"
                 + "</html>";
     }
+
+    @Web("method3")
+    public static String addNumbers(String number1, String number2) {
+        return Double.toString(Double.parseDouble(number1) + Double.parseDouble(number2));
+    }
 }
 
