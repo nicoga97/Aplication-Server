@@ -134,11 +134,11 @@ public class Server {
             } else if (handler.getURLHandlerList().containsKey(inputLine[1])) {
                 if (params != null) {
                     params = getAndcheckParams(params, (String[]) handler.getURLHandlerList().get(inputLine[1]).get(1));
-                    System.out.println(Arrays.toString(params));
                     result = ((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, (Object[]) params).toString().getBytes();
-                    //System.out.println(((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, (Object[]) params).toString());
+                    System.out.println(((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, (Object[]) params).toString());
                 } else {
                     result = ((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, null).toString().getBytes();
+                    System.out.println(((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, null).toString());
                 }
 
 
@@ -160,23 +160,20 @@ public class Server {
 
     }
 
-    public String[] getAndcheckParams(String[]  params, String[] paramsNames) throws Exception {
+    public String[] getAndcheckParams(String[] params, String[] paramsNames) throws Exception {
         String[] ordredParams = new String[paramsNames.length];
         if (params == null || params.length != paramsNames.length) {
             throw new Exception("Not found");
         }
-        for (String s : params) {
-            String[] x = s.split("=");
-            System.out.println(Arrays.toString(x));
 
 
-            for (int i = 0; i < paramsNames.length; i++) {
-                if (x[0].equals(paramsNames[i])) {
-                    System.out.println("entrofd3");
-                    ordredParams[i] = x[1];
-                }
-            }
+        for (int i = 0; i < paramsNames.length; i++) {
+
+            String[] x = params[i].split("=");
+            ordredParams[i] = x[1];
+
         }
+
         return ordredParams;
     }
 

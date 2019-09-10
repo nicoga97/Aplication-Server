@@ -27,7 +27,7 @@
 	async function clicked() {
 	  try {
 		const response = await axios.get("apps/method3?number1="+document.getElementById('number1').value+"&number2="+document.getElementById('number2').value);
-		console.log(response);
+		alert("the answer is: "+response.data);
 	  } catch (error) {
 		console.error(error);
 	  }

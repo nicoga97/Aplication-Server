@@ -34,7 +34,7 @@ public class ListURLHandler {
                     if (method.getParameters() != null && method.getParameters().length > 0) {
                         String[] params = new String[method.getParameters().length];
                         for (int i = 0; i < method.getParameters().length; i++) {
-                            params[i] = method.getParameters()[i].getName();
+                            params[i] = method.getParameters()[i].toString();
                         }
                         methodAndParams.add(params);
                     }
