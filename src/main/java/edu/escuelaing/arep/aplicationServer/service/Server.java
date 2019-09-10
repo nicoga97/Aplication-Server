@@ -137,7 +137,7 @@ public class Server {
 
             } else if (handler.getURLHandlerList().containsKey(inputLine[1])) {
                 if (params != null) {
-                    params = getAndcheckParams(inputLine[1], (String[]) handler.getURLHandlerList().get(inputLine[1]).get(0));
+                    params = getAndcheckParams(params, (String[]) handler.getURLHandlerList().get(inputLine[1]).get(0));
                 }
                 result = ((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, null).toString().getBytes();
                 System.out.println(((Method) handler.getURLHandlerList().get(inputLine[1]).get(0)).invoke(null, null).toString());
@@ -159,8 +159,8 @@ public class Server {
 
     }
 
-    public String[] getAndcheckParams(String request, String[] paramsName) throws Exception {
-        String[] params = new String[paramsName.length];
+    public String[] getAndcheckParams(String[]  params, String[] paramsNames) throws Exception {
+        String[] params = new String[paramsNames.length];
 
         System.out.println(request);
         params[0] = request;
